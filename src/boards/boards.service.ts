@@ -17,7 +17,7 @@ export class BoardsService {
   }
 
   async getBoard(slug: string): Promise<Board> {
-    let board;
+    let board: Board;
 
     try {
       board = await this.board.findOne({ slug: slug }).exec();
