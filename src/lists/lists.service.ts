@@ -1,16 +1,23 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { BoardsService } from 'src/boards/boards.service';
 import { ListDto } from './dtos/list.dto';
 import { List } from './interfaces/list.interface';
 
 @Injectable()
 export class ListsService {
-  constructor(@InjectModel('List') private readonly list: Model<List>) {}
+  constructor(
+    @InjectModel('List') private readonly list: Model<List>,
+    @Inject(forwardRef(() => BoardsService))
+    private readonly boardService: BoardsService,
+  ) {}
 
   async listLists(): Promise<List[]> {
     return await this.list.find().exec();
@@ -33,7 +40,14 @@ export class ListsService {
   }
 
   async createList(listDto: ListDto): Promise<List> {
-    return this.list.create(listDto);
+    const list = await this.list.create({
+      name: listDto.name,
+      color: listDto.color,
+    });
+
+    await this.boardService.addListToBoard(listDto.board, list._id);
+
+    return list;
   }
 
   async deleteList(id: string): Promise<void> {

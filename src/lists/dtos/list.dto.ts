@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsHexColor } from 'class-validator';
+import { IsNotEmpty, IsHexColor, IsUUID } from 'class-validator';
 
 export class ListDto {
   @IsNotEmpty()
@@ -7,4 +7,8 @@ export class ListDto {
   @IsNotEmpty()
   @IsHexColor()
   readonly color: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  readonly board: string;
 }
