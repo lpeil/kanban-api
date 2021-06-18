@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BoardsModule } from './boards/boards.module';
 import { ListsModule } from './lists/lists.module';
+import { CardsModule } from './cards/cards.module';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_URL, {
@@ -15,6 +16,7 @@ import { ListsModule } from './lists/lists.module';
     }),
     BoardsModule,
     ListsModule,
+    CardsModule,
   ],
   controllers: [],
   providers: [],
