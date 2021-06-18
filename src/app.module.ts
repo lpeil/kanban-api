@@ -4,6 +4,7 @@ require('dotenv').config();
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BoardsModule } from './boards/boards.module';
+import { ListsModule } from './lists/lists.module';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_URL, {
@@ -13,6 +14,7 @@ import { BoardsModule } from './boards/boards.module';
       useFindAndModify: false,
     }),
     BoardsModule,
+    ListsModule,
   ],
   controllers: [],
   providers: [],
