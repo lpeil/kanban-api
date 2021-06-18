@@ -23,9 +23,9 @@ export class BoardsController {
     return this.boardService.listBoards();
   }
 
-  @Get('/:id')
-  async getBoard(@Param('id') id: string): Promise<Board> {
-    return this.boardService.getBoard(id);
+  @Get('/:slug')
+  async getBoard(@Param('slug') slug: string): Promise<Board> {
+    return this.boardService.getBoard(slug);
   }
 
   @Post()

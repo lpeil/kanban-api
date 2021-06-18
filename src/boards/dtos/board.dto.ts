@@ -5,6 +5,8 @@ export class BoardDto {
   @IsNotEmpty()
   readonly name: string;
 
+  slug: string;
+
   @IsNotEmpty()
   readonly icon: IconDto;
 }

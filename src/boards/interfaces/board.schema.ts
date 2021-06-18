@@ -3,6 +3,7 @@ import { Schema } from 'mongoose';
 export const BoardSchema = new Schema(
   {
     name: String,
+    slug: String,
     icon: {
       name: String,
       color: String,

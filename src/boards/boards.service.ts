@@ -16,33 +16,39 @@ export class BoardsService {
     return await this.board.find().exec();
   }
 
-  async getBoard(id: string): Promise<Board> {
-    return await this.findBoard(id);
+  async getBoard(slug: string): Promise<Board> {
+    let board;
+
+    try {
+      board = await this.board.findOne({ slug: slug }).exec();
+    } catch (err) {
+      throw new BadRequestException(`${slug} is not a valid path`);
+    }
+
+    if (!board) {
+      throw new NotFoundException(`Board ${slug} not found`);
+    }
+
+    return board;
   }
 
   async createBoard(boardDto: BoardDto): Promise<Board> {
+    boardDto.slug = boardDto.name
+      .replace(/[^A-Z0-9]/gi, '-')
+      .toLocaleLowerCase();
+
     return this.board.create(boardDto);
   }
 
   async deleteBoard(id: string): Promise<void> {
-    await this.findBoard(id);
-
-    await this.board.deleteOne({ _id: id }).exec();
-  }
-
-  async findBoard(id: string) {
-    let board: Board;
-
     try {
-      board = await this.board.findOne({ _id: id }).exec();
+      if (!(await this.board.findOne({ _id: id }).exec())) {
+        throw new NotFoundException(`Board ${id} not found`);
+      }
     } catch (err) {
       throw new BadRequestException(`${id} is not a valid id`);
     }
 
-    if (!board) {
-      throw new NotFoundException(`Board ${id} not found`);
-    }
-
-    return board;
+    await this.board.deleteOne({ _id: id }).exec();
   }
 }
